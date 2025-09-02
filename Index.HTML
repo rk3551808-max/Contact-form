@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Form Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px gray;
+      width: 300px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 15px;
+      color: darkblue;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      background: blue;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: darkblue;
+    }
+    #output {
+      margin-top: 15px;
+      font-weight: bold;
+      color: green;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <form id="myForm">
+    <h2>Contact Form</h2>
+    <input type="text" name="name" placeholder="Enter your name" required>
+    <input type="number" name="number" placeholder="Enter your number" required>
+    <button type="submit">Save</button>
+    <p id="output"></p>
+  </form>
+
+  <script>
+    const form = document.getElementById("myForm");
+    const output = document.getElementById("output");
+
+    // Agar pehle se data localStorage me hai to show karo
+    window.onload = () => {
+      const savedName = localStorage.getItem("name");
+      const savedNumber = localStorage.getItem("number");
+      if (savedName && savedNumber) {
+        output.textContent = `Saved: ${savedName}, ${savedNumber}`;
+      }
+    };
+
+    // Form submit hone par data save karo
+    form.addEventListener("submit", function(e) {
+      e.preventDefault(); // Page reload na ho
+      const name = form.name.value;
+      const number = form.number.value;
+
+      // localStorage me save karo
+      localStorage.setItem("name", name);
+      localStorage.setItem("number", number);
+
+      // screen pe show karo
+      output.textContent = `Saved: ${name}, ${number}`;
+
+      // form reset karo
+      form.reset();
+    });
+  </script>
+</body>
+</html>
