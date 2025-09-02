@@ -1,0 +1,35 @@
+from flask import Flask, render_template, request
+from twilio.rest import Client
+
+app = Flask(__name__)
+
+# Twilio credentials (replace with your actual credentials)
+TWILIO_PHONE = 'your_twilio_phone_number'
+TWILIO_ACCOUNT_SID = 'your_account_sid'
+TWILIO_AUTH_TOKEN = 'your_auth_token'
+
+client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+
+@app.route('/')
+def home():
+    return render_template('admin_panel.html')
+
+@app.route('/send_sms', methods=['POST'])
+def send_sms():
+    phone_number = request.form['phone_number']
+    message = request.form['message']
+    try:
+        # Sending the message via Twilio
+        message = client.messages.create(
+            to=phone_number,
+            from_=TWILIO_PHONE,
+            body=message
+        )
+        return render_template('admin_panel.html', message=f"Message sent to {phone_number} successfully!")
+    except Exception as e:
+        return render_template('admin_panel.html', error=f"Failed to send message. Error: {str(e)}")
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+ 
